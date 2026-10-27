@@ -225,26 +225,38 @@ class MainActivity : AppCompatActivity() {
             <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-              body { font-family: monospace; background:#1a1a1a; color:#e0e0e0; padding:16px; }
-              h1 { color:#ff4444; font-size:20px; }
-              h2 { color:#44aaff; border-bottom:1px solid #333; padding-bottom:4px; margin-top:18px; }
-              a { color:#44ff44; text-decoration:none; word-break:break-word; }
+              body {
+                font-family: ui-monospace, monospace; color:#F4F6F9; padding:16px; margin:0;
+                background-color:#0B1D33;
+                background-image:
+                  linear-gradient(#1F364F 1px, transparent 1px),
+                  linear-gradient(90deg, #1F364F 1px, transparent 1px);
+                background-size:48px 48px;
+              }
+              h1 { color:#F4F6F9; font-size:18px; margin:0 0 2px; letter-spacing:.3px; }
+              h2 {
+                color:#8094AB; font-size:12px; text-transform:lowercase; letter-spacing:1px;
+                border-bottom:1px solid #294863; padding-bottom:4px; margin:20px 0 8px; font-weight:normal;
+              }
+              a { color:#F4F6F9; text-decoration:none; word-break:break-word; }
               a:hover { text-decoration:underline; }
-              .dork { background:#2a2a2a; padding:8px 12px; margin:6px 0; border-radius:4px; border-left:3px solid #44aaff; }
-              .dork.hit { border-left-color:#44ff44; }
-              .dork.miss { border-left-color:#555; opacity:.7; }
-              .actions { margin-top:6px; font-size:12px; }
-              .actions a { color:#ffcc44; margin-right:14px; }
-              .badge { font-size:11px; padding:1px 6px; border-radius:8px; margin-left:6px; }
-              .badge.hit { background:#154a15; color:#8f8; }
-              .badge.miss { background:#3a3a3a; color:#aaa; }
-              .top { color:#9cf; font-size:11px; display:block; margin-top:3px; }
-              .bar { background:#222; padding:10px 12px; border-radius:6px; margin-bottom:10px; }
-              .count { color:#888; font-size:12px; }
+              .dork { background:#122A41; padding:9px 12px; margin:6px 0; border-radius:6px;
+                      border:1px solid #294863; border-left:3px solid #C77E36; }
+              .dork.hit { border-left-color:#4FB477; }
+              .dork.miss { border-left-color:#2d445c; opacity:.65; }
+              .actions { margin-top:7px; font-size:12px; }
+              .actions a { color:#C77E36; margin-right:16px; }
+              .badge { font-size:11px; padding:1px 7px; border-radius:10px; margin-left:6px; }
+              .badge.hit { background:rgba(79,180,119,.16); color:#7fd1a0; }
+              .badge.miss { background:#1b3147; color:#8094AB; }
+              .top { color:#8aa6c4; font-size:11px; display:block; margin-top:4px; }
+              .bar { background:#122A41; border:1px solid #294863; padding:11px 13px;
+                     border-radius:6px; margin-bottom:12px; }
+              .bar a { color:#C77E36; }
+              .count { color:#8094AB; font-size:12px; }
             </style></head><body>
-            <h1>🔍 Dork Arsenal Report</h1>
-            <p>Target: <strong>${esc(target)}</strong> | ${esc(ts)}</p>
-            <p class="count">Total dorks: ${dorks.size}</p>
+            <h1>Dork Arsenal Report</h1>
+            <p class="count">Target: <strong style="color:#C77E36">${esc(target)}</strong> · ${esc(ts)} · ${dorks.size} dorks</p>
             """.trimIndent()
         )
         if (configured && dorks.isNotEmpty()) {

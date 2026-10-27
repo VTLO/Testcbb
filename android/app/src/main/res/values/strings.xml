@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VTLOgenerat0r</string>
+    <string name="logo_mark">V</string>
+    <string name="eyebrow">recon · google dorking · authorized targets only</string>
+    <string name="headline">Find what\'s exposed.\nBefore they do.</string>
     <string name="subtitle">Google Dork Runner by Shuvonsec · Ethical Bug Bounty Use Only</string>
     <string name="hint_domain">Target domain (e.g. example.com)</string>
     <string name="btn_generate">Generate</string>
