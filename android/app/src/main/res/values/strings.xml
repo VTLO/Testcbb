@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VTLOgenerat0r</string>
+    <string name="subtitle">Google Dork Runner by Shuvonsec · Ethical Bug Bounty Use Only</string>
+    <string name="hint_domain">Target domain (e.g. example.com)</string>
+    <string name="btn_generate">Generate</string>
+    <string name="btn_share">Share .txt</string>
+    <string name="status_idle">Enter an in-scope target and tap Generate.</string>
+    <string name="status_generated">%1$d dorks generated for %2$s</string>
+</resources>
