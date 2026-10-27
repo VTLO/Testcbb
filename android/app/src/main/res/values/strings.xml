@@ -4,7 +4,15 @@
     <string name="subtitle">Google Dork Runner by Shuvonsec · Ethical Bug Bounty Use Only</string>
     <string name="hint_domain">Target domain (e.g. example.com)</string>
     <string name="btn_generate">Generate</string>
-    <string name="btn_share">Share .txt</string>
+    <string name="btn_autocheck">Auto-check</string>
+    <string name="btn_generate_new">New dorks</string>
+    <string name="btn_settings">Settings</string>
+    <string name="btn_share">Share</string>
     <string name="status_idle">Enter an in-scope target and tap Generate.</string>
+    <string name="status_db">Dork DB ready: %1$d templates (%2$d generated).</string>
     <string name="status_generated">%1$d dorks generated for %2$s</string>
+    <string name="status_checking">Auto-checking %1$d dorks via Search API…</string>
+    <string name="status_checked">Auto-check done: %1$d/%2$d returned results.</string>
+    <string name="status_generating">Generating new dorks…</string>
+    <string name="status_newdorks">+%1$d new dorks. DB now %2$d templates (%3$d generated).</string>
 </resources>
