@@ -1,0 +1,10 @@
+# Gradle / build outputs
+.gradle/
+build/
+app/build/
+# Local machine config (contains absolute SDK path)
+local.properties
+# IDE
+.idea/
+*.iml
+captures/

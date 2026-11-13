@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Always-dark navy theme, modelled on the XC Consulting reference. -->
+    <style name="Theme.DorkRunner" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">@color/accent_dark</item>
+        <item name="colorSurface">@color/navy_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOutline">@color/border</item>
+        <item name="android:colorBackground">@color/navy_bg</item>
+        <item name="android:windowBackground">@color/navy_bg</item>
+        <item name="android:statusBarColor">@color/navy_header</item>
+        <item name="android:navigationBarColor">@color/navy_bg</item>
+    </style>
+
+    <!-- Secondary action: thin-bordered, light text (like "Voir les domaines"). -->
+    <style name="Btn.Outline" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="strokeColor">@color/border</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <!-- Primary action: filled orange, dark text (like "Estimer une mission"). -->
+    <style name="Btn.Primary" parent="Widget.Material3.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+</resources>

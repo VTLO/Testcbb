@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="navy_bg">#0B1D33</color>
+    <color name="navy_surface">#122A41</color>
+    <color name="navy_header">#16304A</color>
+    <color name="grid_line">#1F364F</color>
+    <color name="border">#294863</color>
+    <color name="accent">#C77E36</color>
+    <color name="accent_dark">#0B1D33</color>
+    <color name="text_primary">#F4F6F9</color>
+    <color name="text_muted">#8094AB</color>
+    <color name="hit_green">#4FB477</color>
+</resources>
