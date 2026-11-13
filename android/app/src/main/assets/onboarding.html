@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Guide VTLOgenerat0r</title>
+<style>
+  :root{
+    --navy:#0B1D33; --surface:#122A41; --border:#294863;
+    --accent:#C77E36; --text:#F4F6F9; --muted:#8094AB; --grid:#1F364F; --green:#4FB477;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;margin:0;}
+  body{
+    font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--text);
+    background-color:var(--navy);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:48px 48px;
+    display:flex; flex-direction:column; min-height:100%;
+  }
+  header{display:flex; align-items:center; justify-content:space-between; padding:16px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:bold;}
+  .logo{width:30px;height:30px;border:1.5px solid var(--text);border-radius:4px;
+        display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .skip{color:var(--muted); background:none; border:none; font-family:inherit; font-size:13px; padding:6px;}
+  .dots{display:flex; gap:7px; justify-content:center; padding:4px 0 0;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .3s;}
+  .dot.on{background:var(--accent); width:20px; border-radius:4px;}
+  main{flex:1; display:flex; align-items:center; justify-content:center; padding:10px 22px;}
+  .slide{display:none; text-align:center; max-width:420px; width:100%;}
+  .slide.on{display:block; animation:slidein .45s cubic-bezier(.2,.7,.2,1);}
+  @keyframes slidein{from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:none;}}
+  .art{height:140px; display:flex; align-items:center; justify-content:center; margin-bottom:18px;}
+  h1{font-size:22px; margin:0 0 10px; letter-spacing:.3px;}
+  h1 .ac{color:var(--accent);}
+  p{color:var(--muted); font-size:14px; line-height:1.55; margin:0 auto; max-width:360px;}
+  .warn{color:var(--accent); font-size:12px; margin-top:12px;}
+  footer{padding:18px 22px calc(18px + env(safe-area-inset-bottom));}
+  .bar{height:3px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:16px;}
+  .bar>i{display:block; height:100%; width:0; background:var(--accent);}
+  .bar.run>i{animation:fill 6s linear forwards;}
+  @keyframes fill{to{width:100%;}}
+  .next{width:100%; padding:14px; border:none; border-radius:8px; background:var(--accent);
+        color:var(--navy); font-family:inherit; font-weight:bold; font-size:15px; letter-spacing:.3px;}
+  .next:active{opacity:.85;}
+  /* ── illustrations ── */
+  svg{overflow:visible;}
+  .pulse{transform-origin:center; animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1); opacity:1;} 50%{transform:scale(1.12); opacity:.75;}}
+  .ring{transform-origin:center; animation:spin 9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .row{opacity:0; animation:pop .5s forwards;}
+  .row:nth-child(1){animation-delay:.1s}.row:nth-child(2){animation-delay:.35s}.row:nth-child(3){animation-delay:.6s}
+  @keyframes pop{from{opacity:0; transform:translateX(-12px);} to{opacity:1; transform:none;}}
+  .chk{stroke-dasharray:22; stroke-dashoffset:22; animation:draw 1s ease forwards;}
+  .chk.d2{animation-delay:.5s}.chk.d3{animation-delay:1s}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .float{animation:float 2.6s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .spark{transform-origin:center; animation:spark 1.5s ease-in-out infinite;}
+  @keyframes spark{0%,100%{opacity:.4; transform:scale(.8);}50%{opacity:1; transform:scale(1.15);}}
+  .link{stroke-dasharray:60; stroke-dashoffset:60; animation:draw2 1.4s ease forwards infinite;}
+  @keyframes draw2{0%{stroke-dashoffset:60;}60%,100%{stroke-dashoffset:0;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">V</span>VTLOgenerat0r</div>
+  <button class="skip" onclick="finish()">Passer ✕</button>
+</header>
+<div class="dots" id="dots"></div>
+
+<main>
+  <!-- 1 — intro -->
+  <section class="slide on">
+    <div class="art">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+        <circle class="ring" cx="60" cy="60" r="50" stroke="#294863" stroke-width="2" stroke-dasharray="6 10"/>
+        <g class="pulse">
+          <circle cx="54" cy="54" r="24" stroke="#C77E36" stroke-width="5" fill="none"/>
+          <line x1="72" y1="72" x2="92" y2="92" stroke="#C77E36" stroke-width="6" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <h1><span class="ac">VTLO</span>generat0r</h1>
+    <p>Reconnaissance par <strong>Google dorking</strong>. Trouvez ce qui est exposé sur une cible — avant les autres.</p>
+    <p class="warn">⚠ Cibles autorisées uniquement · bug bounty / pentest</p>
+  </section>
+
+  <!-- 2 — générer -->
+  <section class="slide">
+    <div class="art">
+      <svg width="150" height="120" viewBox="0 0 150 120" fill="none">
+        <rect x="15" y="12" width="120" height="22" rx="5" stroke="#294863" stroke-width="2"/>
+        <text x="26" y="28" fill="#8094AB" font-size="12" font-family="monospace">example.com</text>
+        <g>
+          <rect class="row" x="15" y="46" width="120" height="16" rx="4" fill="#122A41" stroke="#C77E36" stroke-width="1.5"/>
+          <rect class="row" x="15" y="68" width="120" height="16" rx="4" fill="#122A41" stroke="#294863" stroke-width="1.5"/>
+          <rect class="row" x="15" y="90" width="120" height="16" rx="4" fill="#122A41" stroke="#294863" stroke-width="1.5"/>
+        </g>
+      </svg>
+    </div>
+    <h1>1 · <span class="ac">Générer</span></h1>
+    <p>Saisissez un domaine cible, choisissez une catégorie — identifiants, admin, fuites, cloud… — puis touchez <strong>Générer</strong>. L'app crée des requêtes Google prêtes à cliquer.</p>
+  </section>
+
+  <!-- 3 — auto-check -->
+  <section class="slide">
+    <div class="art">
+      <svg width="140" height="120" viewBox="0 0 140 120" fill="none">
+        <g transform="translate(20,18)">
+          <circle cx="12" cy="12" r="11" stroke="#4FB477" stroke-width="2.5"/>
+          <path class="chk" d="M6 12 l4 4 l7 -8" stroke="#4FB477" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="45" r="11" stroke="#4FB477" stroke-width="2.5"/>
+          <path class="chk d2" d="M6 45 l4 4 l7 -8" stroke="#4FB477" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="78" r="11" stroke="#294863" stroke-width="2.5"/>
+          <path class="chk d3" d="M6 78 l4 4 l7 -8" stroke="#4FB477" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="34" y="4" width="78" height="16" rx="4" fill="#122A41"/>
+          <rect x="34" y="37" width="78" height="16" rx="4" fill="#122A41"/>
+          <rect x="34" y="70" width="60" height="16" rx="4" fill="#0f2235"/>
+        </g>
+      </svg>
+    </div>
+    <h1>2 · <span class="ac">Auto-check</span></h1>
+    <p>Ajoutez votre clé <strong>Google Custom Search</strong> dans Réglages. L'app teste chaque dork et marque en vert ceux qui renvoient réellement des résultats.</p>
+  </section>
+
+  <!-- 4 — chaînage -->
+  <section class="slide">
+    <div class="art">
+      <svg width="150" height="120" viewBox="0 0 150 120" fill="none">
+        <path class="link" d="M30 30 L75 60 L120 40 M75 60 L70 95" stroke="#C77E36" stroke-width="2.5" fill="none"/>
+        <circle class="float" cx="30" cy="30" r="10" fill="#122A41" stroke="#4FB477" stroke-width="2.5"/>
+        <circle cx="75" cy="60" r="9" fill="#122A41" stroke="#C77E36" stroke-width="2.5"/>
+        <circle cx="120" cy="40" r="8" fill="#122A41" stroke="#C77E36" stroke-width="2.5"/>
+        <circle cx="70" cy="95" r="8" fill="#122A41" stroke="#C77E36" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <h1>3 · <span class="ac">Chaînage</span></h1>
+    <p>Depuis un résultat trouvé, touchez <strong>⛓ chaîner</strong> pour générer des dorks de suivi et creuser la piste — sous-domaine, bucket cloud, paramètres injectables.</p>
+  </section>
+
+  <!-- 5 — nouveaux dorks -->
+  <section class="slide">
+    <div class="art">
+      <svg width="130" height="120" viewBox="0 0 130 120" fill="none">
+        <g transform="translate(65,58)">
+          <path class="spark" d="M0 -34 L7 -7 L34 0 L7 7 L0 34 L-7 7 L-34 0 L-7 -7 Z" fill="#C77E36"/>
+          <circle cx="0" cy="0" r="6" fill="#F4F6F9"/>
+        </g>
+        <circle class="spark" cx="26" cy="26" r="3" fill="#4FB477"/>
+        <circle class="spark" cx="104" cy="90" r="3" fill="#4FB477"/>
+      </svg>
+    </div>
+    <h1>4 · <span class="ac">Nouveaux dorks</span></h1>
+    <p>Le moteur génère de nouveaux dorks originaux et <strong>apprend</strong> lesquels fonctionnent, puis les enregistre dans la base locale pour la prochaine fois.</p>
+  </section>
+
+  <!-- 6 — prêt -->
+  <section class="slide">
+    <div class="art">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+        <circle class="pulse" cx="60" cy="60" r="40" fill="#122A41" stroke="#4FB477" stroke-width="3"/>
+        <path d="M44 60 l11 11 l22 -24" stroke="#4FB477" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1>Prêt ?</h1>
+    <p>Chassez de façon responsable. N'utilisez l'outil que sur des cibles que vous êtes autorisé à tester.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="bar run"><i></i></div>
+  <button class="next" id="next" onclick="advance()">Suivant</button>
+</footer>
+
+<script>
+  var slides = document.querySelectorAll('.slide');
+  var dotsBox = document.getElementById('dots');
+  var nextBtn = document.getElementById('next');
+  var bar = document.querySelector('.bar');
+  var i = 0, timer = null;
+  for (var s=0; s<slides.length; s++){ var d=document.createElement('div'); d.className='dot'+(s===0?' on':''); dotsBox.appendChild(d); }
+  var dots = dotsBox.children;
+
+  function render(){
+    for (var k=0;k<slides.length;k++){ slides[k].classList.toggle('on', k===i); dots[k].classList.toggle('on', k===i); }
+    nextBtn.textContent = (i === slides.length-1) ? 'Commencer' : 'Suivant';
+    restartBar();
+  }
+  function restartBar(){
+    bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run');
+    clearTimeout(timer);
+    timer = setTimeout(advance, 6000);
+  }
+  function advance(){
+    if (i < slides.length-1){ i++; render(); } else { finish(); }
+  }
+  function finish(){
+    clearTimeout(timer);
+    // Android intercepts this scheme to dismiss the guide; web overrides window.finish.
+    window.location.href = 'vtlo://done';
+  }
+  render();
+</script>
+</body>
+</html>

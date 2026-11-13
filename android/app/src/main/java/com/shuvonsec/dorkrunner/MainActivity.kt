@@ -6,11 +6,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -71,6 +74,54 @@ class MainActivity : AppCompatActivity() {
 
         val (total, gen, _) = db.stats()
         binding.statusText.text = getString(R.string.status_db, total, gen)
+
+        // Long-press the title to replay the guide.
+        binding.titleText.setOnLongClickListener { showOnboarding(); true }
+
+        if (!prefs.getBoolean("onboarding_done", false)) showOnboarding()
+    }
+
+    // ── First-launch animated guide (assets/onboarding.html, French) ──────────
+    private var onboarding: View? = null
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun showOnboarding() {
+        if (onboarding != null) return
+        val wv = WebView(this).apply {
+            setBackgroundColor(0xFF0B1D33.toInt())
+            settings.javaScriptEnabled = true // local asset only
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                    if (url == null) return false
+                    if (url.startsWith("vtlo://")) { dismissOnboarding(); return true }
+                    if (url.startsWith("http://") || url.startsWith("https://")) {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))); return true
+                    }
+                    return false
+                }
+            }
+            loadUrl("file:///android_asset/onboarding.html")
+        }
+        val overlay = FrameLayout(this).apply {
+            setBackgroundColor(0xFF0B1D33.toInt())
+            isClickable = true // swallow touches to the screen behind
+            addView(wv, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        }
+        addContentView(overlay, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        onboarding = overlay
+    }
+
+    private fun dismissOnboarding() {
+        prefs.edit().putBoolean("onboarding_done", true).apply()
+        (onboarding?.parent as? ViewGroup)?.removeView(onboarding)
+        onboarding = null
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (onboarding != null) { dismissOnboarding(); return }
+        @Suppress("DEPRECATION")
+        super.onBackPressed()
     }
 
     override fun onDestroy() {

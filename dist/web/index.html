@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VTLOgenerat0r</title>
+<style>
+  :root{
+    --navy:#0B1D33; --surface:#122A41; --header:#16304A; --border:#294863;
+    --accent:#C77E36; --text:#F4F6F9; --muted:#8094AB; --grid:#1F364F; --green:#4FB477;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;min-height:100%;}
+  body{
+    font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--text);
+    background-color:var(--navy);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:48px 48px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding-bottom:60px;}
+  header{display:flex;align-items:center;gap:12px;background:var(--header);
+         padding:16px 20px;border-bottom:1px solid var(--border);}
+  .logo{width:34px;height:34px;border:1.5px solid var(--text);border-radius:4px;
+        display:flex;align-items:center;justify-content:center;font-weight:bold;}
+  header b{font-size:18px;}
+  .content{padding:20px;}
+  .eyebrow{color:var(--muted);font-size:12px;letter-spacing:.04em;}
+  h1.hero{font-size:28px;margin:6px 0 2px;line-height:1.1;}
+  .byline{color:var(--muted);font-size:12px;margin-bottom:18px;}
+  input,select{width:100%;background:var(--surface);border:1px solid var(--border);
+        color:var(--text);font-family:inherit;font-size:14px;padding:12px 14px;border-radius:6px;margin-top:8px;}
+  input::placeholder{color:var(--muted);}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  button{font-family:inherit;font-size:14px;padding:11px 16px;border-radius:7px;cursor:pointer;}
+  .primary{background:var(--accent);color:var(--navy);border:none;font-weight:bold;flex:1 1 100%;}
+  .ghost{background:transparent;color:var(--text);border:1px solid var(--border);flex:1 1 40%;}
+  .ghost:hover{border-color:var(--accent);}
+  .status{color:var(--muted);font-size:12px;margin-top:14px;min-height:16px;}
+  /* report */
+  #report{margin-top:14px;}
+  #report h2{color:var(--muted);font-size:12px;text-transform:lowercase;letter-spacing:1px;
+             border-bottom:1px solid var(--border);padding-bottom:4px;margin:20px 0 8px;font-weight:normal;}
+  .dork{background:var(--surface);padding:9px 12px;margin:6px 0;border-radius:6px;
+        border:1px solid var(--border);border-left:3px solid var(--accent);}
+  .dork.hit{border-left-color:var(--green);}
+  .dork.miss{border-left-color:#2d445c;opacity:.65;}
+  .dork a{color:var(--text);text-decoration:none;word-break:break-word;}
+  .dork a:hover{text-decoration:underline;}
+  .badge{font-size:11px;padding:1px 7px;border-radius:10px;margin-left:6px;}
+  .badge.hit{background:rgba(79,180,119,.16);color:#7fd1a0;}
+  .badge.miss{background:#1b3147;color:var(--muted);}
+  .top{color:#8aa6c4;font-size:11px;display:block;margin-top:4px;}
+  .actions{margin-top:7px;font-size:12px;}
+  .actions a{color:var(--accent);margin-right:16px;cursor:pointer;}
+  .bar{background:var(--surface);border:1px solid var(--border);padding:11px 13px;border-radius:6px;margin-bottom:10px;}
+  .bar a{color:var(--accent);cursor:pointer;}
+  .count{color:var(--muted);font-size:12px;}
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(5,14,26,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:20;}
+  .modal.on{display:flex;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:420px;width:100%;}
+  .card h3{margin:0 0 6px;}
+  .card p{color:var(--muted);font-size:13px;line-height:1.5;}
+  .card .btns{margin-top:16px;}
+  /* onboarding */
+  #onb{position:fixed;inset:0;z-index:40;background-color:var(--navy);
+       background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+       background-size:48px 48px;display:none;flex-direction:column;}
+  #onb.on{display:flex;}
+  #onb header{background:transparent;border:none;justify-content:space-between;}
+  #onb .skip{background:none;border:none;color:var(--muted);}
+  #onb .dots{display:flex;gap:7px;justify-content:center;}
+  #onb .dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .3s;}
+  #onb .dot.on{background:var(--accent);width:20px;border-radius:4px;}
+  #onb main{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 22px;}
+  #onb .slide{display:none;text-align:center;max-width:440px;}
+  #onb .slide.on{display:block;animation:slidein .45s cubic-bezier(.2,.7,.2,1);}
+  @keyframes slidein{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+  #onb .art{height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  #onb h1{font-size:24px;margin:0 0 10px;}
+  #onb h1 .ac{color:var(--accent);}
+  #onb p{color:var(--muted);font-size:14px;line-height:1.55;max-width:380px;margin:0 auto;}
+  #onb .warn{color:var(--accent);font-size:12px;margin-top:12px;}
+  #onb footer{padding:18px 22px;}
+  #onb .next{width:100%;padding:14px;border:none;border-radius:8px;background:var(--accent);color:var(--navy);font-weight:bold;font-size:15px;}
+  .pulse{transform-origin:center;animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.12);opacity:.75;}}
+  .ring{transform-origin:center;animation:spin 9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .spark{transform-origin:center;animation:spark 1.5s ease-in-out infinite;}
+  @keyframes spark{0%,100%{opacity:.4;transform:scale(.8);}50%{opacity:1;transform:scale(1.15);}}
+  .float{animation:float 2.6s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="logo">V</span><b>VTLOgenerat0r</b>
+  </header>
+  <div class="content">
+    <div class="eyebrow">recon · google dorking · authorized targets only</div>
+    <h1 class="hero">Find what's exposed.<br>Before they do.</h1>
+    <div class="byline">by VTLO · ethical bug-bounty use only</div>
+
+    <input id="domain" type="text" placeholder="Target domain (e.g. example.com)" autocomplete="off">
+    <select id="category"></select>
+
+    <div class="btns">
+      <button class="primary" onclick="app.generate()">Generate</button>
+    </div>
+    <div class="btns">
+      <button class="ghost" onclick="app.autoCheckAll()">Auto-check</button>
+      <button class="ghost" onclick="app.generateNew()">New dorks</button>
+      <button class="ghost" onclick="app.openSettings()">Settings</button>
+      <button class="ghost" onclick="app.share()">Export .txt</button>
+      <button class="ghost" onclick="app.showGuide()">Guide</button>
+    </div>
+    <div class="status" id="status">Enter an in-scope target and click Generate.</div>
+    <div id="report"></div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal" id="settings">
+  <div class="card">
+    <h3>Search API credentials</h3>
+    <p>Auto-check uses Google's Programmable Search (Custom Search JSON API) with your own
+       key + engine id. Free tier: 100 queries/day. Use only against in-scope targets you
+       are authorized to test. Stored locally in your browser.</p>
+    <input id="apiKey" type="text" placeholder="Google API key" autocomplete="off">
+    <input id="cx" type="text" placeholder="Search engine id (cx)" autocomplete="off">
+    <div class="btns">
+      <button class="primary" onclick="app.saveSettings()">Save</button>
+      <button class="ghost" onclick="app.closeSettings()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Onboarding overlay (French) -->
+<div id="onb"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

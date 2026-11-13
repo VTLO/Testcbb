@@ -1,13 +1,16 @@
 # VTLOgenerat0r — Android app
 
-A native Android (Kotlin) port of [`scripts/dork_runner.py`](../scripts/dork_runner.py)
-(*Google Dork Runner by Shuvonsec*). It takes an **in-scope** target domain, builds the
-same Google search ("dork") URLs the Python script generates, and renders them as a
-clickable report. Tapping a dork opens that Google search in the device browser; the
-**Share .txt** button exports the same plain-text list the Python `-o` flag produces.
+**By VTLO.** A native Android (Kotlin) app built on the dork templates in
+[`scripts/dork_runner.py`](../scripts/dork_runner.py). It takes an **in-scope** target
+domain, builds Google search ("dork") URLs, and renders them as a clickable report.
+Tapping a dork opens that Google search in the device browser; the **Export .txt** button
+exports a plain-text list.
 
-Like the script, this is a recon aid for **authorized bug-bounty / pentest work only** —
-it generates search links; it does not scrape, automate, or exploit anything.
+A short **animated guide (in French)** plays on first launch to explain the workflow;
+long-press the title bar to replay it any time.
+
+This is a recon aid for **authorized bug-bounty / pentest work only** — it generates
+search links; it does not scrape, automate, or exploit anything.
 
 ## Features (parity with the Python script)
 
@@ -60,10 +63,10 @@ built-in dorks on first launch and grows as you generate.
 
 ## Prebuilt APK
 
-A debug-signed APK is checked in at **[`VTLOgenerat0r.apk`](VTLOgenerat0r.apk)**.
+A debug-signed APK is checked in at **[`../dist/VTLOgenerat0r.apk`](../dist/VTLOgenerat0r.apk)**
+(see [`dist/`](../dist/) for all downloadable builds, including the PC web app).
 
 ```
-Package:   com.shuvonsec.dorkrunner
 Label:     VTLOgenerat0r
 minSdk:    24 (Android 7.0)   targetSdk: 34 (Android 14)
 Signing:   Android debug key
@@ -72,7 +75,7 @@ Signing:   Android debug key
 Install on a device/emulator:
 
 ```bash
-adb install -r android/VTLOgenerat0r.apk
+adb install -r dist/VTLOgenerat0r.apk
 ```
 
 (Debug APKs install directly; for sideloading outside `adb`, enable "Install unknown apps".)
@@ -95,13 +98,20 @@ For a release build, add a signing config and run `./gradlew :app:assembleReleas
 ```
 android/
 ├── settings.gradle, build.gradle, gradle.properties
-├── VTLOgenerat0r.apk                 # prebuilt debug APK
 └── app/
     ├── build.gradle
     └── src/main/
         ├── AndroidManifest.xml
+        ├── assets/onboarding.html    # first-launch animated guide (French)
         ├── java/com/shuvonsec/dorkrunner/
-        │   ├── Dorks.kt              # dork templates + report generation (ported 1:1)
-        │   └── MainActivity.kt       # UI, WebView report, share/export
+        │   ├── Dorks.kt              # dork templates + report generation
+        │   ├── DorkDb.kt             # local SQLite DB + effectiveness stats
+        │   ├── DorkGenerator.kt      # feedback-weighted generative engine
+        │   ├── SearchClient.kt       # Google Custom Search auto-check
+        │   ├── Chainer.kt            # follow-up dork chaining
+        │   └── MainActivity.kt       # UI, WebView report, onboarding, share
         └── res/                      # layout, strings, theme, launcher icon
 ```
+
+The prebuilt APK now lives in [`../dist/`](../dist/) (not under `android/`) so all
+downloadable builds sit together.
