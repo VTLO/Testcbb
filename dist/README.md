@@ -55,3 +55,15 @@ dist/
     ├── index.html        # PC web app (open or serve this)
     └── app.js            # app logic (dorks, auto-check, chaining, generator, guide)
 ```
+
+## Publish as a live web app
+
+The web app can be deployed anywhere static files are served. Pick one:
+
+**GitHub Pages** (fastest):
+1. Go to repo **Settings** → **Pages**
+2. Select `Deploy from a branch` → branch `main`, folder `/dist/web`
+3. GitHub will serve it at `https://VTLO.github.io/Testcbb/web/`
+
+**Other hosts** (Netlify, Vercel, AWS S3, Cloudflare Pages):
+- Upload the contents of `dist/web/` to any static host
